@@ -120,4 +120,44 @@ results[:5]
 #できたシリーズの上位8つ
 results.value_counts()[:8]
 
-#Windowsユーザか否かで文字列を分けてみよう。
+#Mozillaユーザか否かで文字列を分けてみよう。
+
+#フレーム'a'のうち、存在しないレコードを削除する
+cframe = frame[frame.a.notnull()]
+
+#numpyのWhereをつかってMozillaかどうかを振り分け
+#where(condition,x,y)により戻されるndarrayには、conditionが真の場合にはx,技の場合にはyが入る
+#excelのif文っぽい挙動をして、新たなキーを作る感じか
+operating_system = np.where(cframe['a'].str.contains('Mozilla'),'Mozilla','not Mozilla')
+
+#pandasのgroupbyをつかって、cframeのレコードをタイムゾーンと稼働OSの組み合わせごとにグループ化する
+by_tz_os = cframe.groupby(['tz', operating_system])
+
+by_tz_os.head()
+#groupbyで指定した因子のサイズを集計する。
+by_tz_os.size().head()
+
+agg_counts_1d = by_tz_os.size()
+agg_counts_1d[:10]
+#２個あるカテゴリをunstackでほどいて、1次元データを2次元データに置き換える。
+agg_counts = by_tz_os.size().unstack().fillna(0)
+agg_counts[:10]
+
+#昇順のソートを使用する。Numpyのargsortで並べ替えできる
+indexer = agg_counts.sum(1).argsort()
+indexer[:10]
+
+#numpy takeは、要素をindexで抜き出すだけ
+agg_counts.take([1])
+agg_counts.take([2])
+agg_counts.take([3])
+
+#indexerで上位10件の項目を抜き出してsubsetを作る
+count_subset = agg_counts.take(indexer)[-10:]
+
+#プロットする
+count_subset.plot(kind='barh', stacked=True)
+
+#divでMozillaとnot Mozillaの割合を出す
+normed_subset = count_subset.div(count_subset.sum(1), axis=0)
+normed_subset.plot(kind='barh', stacked=True)
