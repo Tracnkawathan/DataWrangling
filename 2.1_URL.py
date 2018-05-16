@@ -145,6 +145,7 @@ agg_counts[:10]
 
 #昇順のソートを使用する。Numpyのargsortで並べ替えできる
 indexer = agg_counts.sum(1).argsort()
+#indexerは2列目がキモ。69,77,24,...のインデックスがMozilla+NotMozillaの総数の少ない順に並んでいる。
 indexer[:10]
 
 #numpy takeは、要素をindexで抜き出すだけ
@@ -152,7 +153,7 @@ agg_counts.take([1])
 agg_counts.take([2])
 agg_counts.take([3])
 
-#indexerで上位10件の項目を抜き出してsubsetを作る
+#indexerで上位10件の項目を抜き出してsubsetを作る（多いのから10個分）
 count_subset = agg_counts.take(indexer)[-10:]
 
 #プロットする
