@@ -6,14 +6,14 @@ import pandas as pd
 
 
 # path of 'usagov' txt.
-path = 'bitly/usagov_bitly_data2013-03-15-1363313968.txt'
+path = 'ch02/2.1/bitly/usagov_bitly_data2013-03-15-1363313968.txt'
 # read a line of the txt file.
 open(path).readline()
 
 # now we are going to read in json style.
 import json
 # path of 'usagov' txt, again.
-path = 'bitly/usagov_bitly_data2013-03-15-1363313968.txt'
+path = 'ch02/2.1/bitly/usagov_bitly_data2013-03-15-1363313968.txt'
 # リスト内包によってtxt各行をリードして、そのままpythonディクショナリ型を作成
 records = [json.loads(line) for line in open(path)]
 
