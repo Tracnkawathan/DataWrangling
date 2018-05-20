@@ -1,3 +1,4 @@
+# coding=utf-8
 ### 2.1 データ分析の例：短縮URL 1.usa.govへの変換データ
 
 import matplotlib.pyplot as plt
